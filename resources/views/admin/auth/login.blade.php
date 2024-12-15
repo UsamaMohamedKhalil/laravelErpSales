@@ -13,12 +13,14 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('assets/admin/dist/css/adminlte.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap_rtl-v4.2.1/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap_rtl-v4.2.1/custom_rtl.css') }}">
   <link href="{{ asset('assets/admin/fonts/SansPro/SansPro.min.css') }}" rel="stylesheet">
 
   <style>
-    /* Body styling */
+    /* Body Styling */
     body {
-      background: linear-gradient(135deg, #1e3c72, #2a5298); /* تدرج لوني حديث */
+      background-color: #ffffff; /* خلفية بيضاء */
       font-family: 'Source Sans Pro', sans-serif;
       display: flex;
       align-items: center;
@@ -34,40 +36,21 @@
 
     /* Card Styling */
     .card {
-      background: rgba(255, 255, 255, 0.9); /* نصف شفاف */
+      background: #ffffff; /* لون أبيض للكارد */
       border-radius: 15px; /* حواف ناعمة */
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* ظل عميق */
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* ظل خفيف */
       overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .card:hover {
-      transform: translateY(-5px); /* حركة بسيطة عند التمرير */
-      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3); /* زيادة الظل */
-    }
-
-    /* Header */
-    .login-header {
-      background: linear-gradient(135deg, #2a5298, #1e3c72);
-      color: #fff;
+    /* Logo Styling */
+    .login-logo {
       text-align: center;
-      padding: 20px;
-      font-size: 24px;
-      font-weight: bold;
-      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
     }
 
-    /* Login Card Body */
-    .login-card-body {
-      padding: 30px;
-    }
-
-    .login-card-body .login-box-msg {
-      font-size: 18px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 25px;
-      text-align: center;
+    .login-logo img {
+      width: 100px; /* حجم الشعار */
+      height: auto;
     }
 
     /* Form Inputs */
@@ -123,19 +106,27 @@
     .login-footer a:hover {
       text-decoration: underline;
     }
+    .login-logo img {
+    width: 150px; /* العرض */
+    height: auto; /* للحفاظ على التناسب */
+}fit: contain; /* للحفاظ على تناسب الصورة */
+}
   </style>
 </head>
 <body>
 <div class="login-box">
+  <!-- Logo Section -->
+  <div class="login-logo">
+    <img src="{{ asset('assets/admin/imgs/logo.png') }}" alt="Logo"> <!-- استبدل المسار بمسار الشعار الخاص بك -->
+  </div>
+
   <div class="card">
-    <div class="login-header">
-      تسجيل الدخول
-    </div>
     <div class="card-body login-card-body">
       <p class="login-box-msg">مرحباً بك! الرجاء تسجيل الدخول للوصول إلى حسابك</p>
-      <form action="" method="post">
+      <form action="{{route('admin.login')}}" method="post">
+        @csrf
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="اسم المستخدم">
+          <input type="text" name="username" class="form-control" placeholder="اسم المستخدم">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -143,7 +134,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="كلمة المرور">
+          <input type="password" name="password" class="form-control" placeholder="كلمة المرور">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -157,9 +148,14 @@
         </div>
       </form>
     </div>
-   {{--  <div class="login-footer">
-      <p>نسيت كلمة المرور؟ <a href="#">اضغط هنا</a></p>
-    </div> --}}
+    <div class="login-footer">
+      @error('username')
+      <p class="text-danger">{{ $message }}</p>
+      @enderror
+      @error('password')
+      <p class="text-danger">{{ $message }}</p>
+      @enderror
+    </div>
   </div>
 </div>
 
